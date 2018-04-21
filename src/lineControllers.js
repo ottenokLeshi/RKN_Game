@@ -20,7 +20,7 @@ const changeColortoRed = (routeLine) => {
     }
 }
 
-module.exports = createLine = (start, end) => {
+module.exports = createLine = (start, end, index) => {
     var routingParameters = {
     'mode': 'fastest;bicycle',
     'waypoint0': `geo!${start}`,
@@ -31,6 +31,7 @@ module.exports = createLine = (start, end) => {
     var onResult = function(result) {
         var route, routeShape, startPoint, endPoint, linestring, routeLine;
         if (result.response.route) {
+            console.log(index)
             route = result.response.route[0];
             routeShape = route.shape;
             linestring = new H.geo.LineString();
