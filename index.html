@@ -8,7 +8,8 @@
   <script src="http://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
-  <div style="width: 100vw; height: 550px; margin: 0, auto;display: inline-block;" id="mapContainer"></div>
+    <h1 id="left" style="position: absolute; z-index: 100;color: red; left: 100px; top: 40px"> </h1>
+  <div style="width: 100vw; height: 600px; margin: 0, auto;display: inline-block;" id="mapContainer"></div>
   <script>
     var platform = new H.service.Platform({'app_id': 'IkYKoe8p1ag4vlMYhRvf','app_code': 'JJCnyASlst4rtZpsBxwsUg'});
     var maptypes = platform.createDefaultLayers();
