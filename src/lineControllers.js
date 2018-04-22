@@ -7,7 +7,14 @@ const changeColortoBlue = (routeLine) => {
             lineWidth: lineWidth
         }))
     }
+}
 
+const isRed = (routeLine) => {
+    const currentColor = routeLine.getStyle().strokeColor;
+    if (currentColor == 'rgba(255,0,0,.9)') {
+        return true;
+    }
+    return false;
 }
 
 const changeColortoRed = (routeLine) => {
@@ -20,9 +27,9 @@ const changeColortoRed = (routeLine) => {
     }
 }
 
-module.exports = createLine = (start, end, index) => {
+module.exports = createLine = (start, end, index, nodeMap) => {
     var routingParameters = {
-    'mode': 'fastest;bicycle',
+    'mode': 'fastest;car',
     'waypoint0': `geo!${start}`,
     'waypoint1': `geo!${end}`,
     'representation': 'display'
@@ -31,7 +38,6 @@ module.exports = createLine = (start, end, index) => {
     var onResult = function(result) {
         var route, routeShape, startPoint, endPoint, linestring, routeLine;
         if (result.response.route) {
-            console.log(index)
             route = result.response.route[0];
             routeShape = route.shape;
             linestring = new H.geo.LineString();
@@ -45,9 +51,24 @@ module.exports = createLine = (start, end, index) => {
         }  
 
         routeLine.addEventListener('tap', (evt) => { 
+            if (!isRed(routeLine) && window.lastLine < window.lines.length) {
+
+                if (window.lastLine < window.lines.length) {
+                    createLine(window.lines[window.lastLine][0],window.lines[window.lastLine][1], index, nodeMap);
+                    window.lastLine++;
+                }
+            }
+            console.log(window.lastLine);
             changeColortoRed(routeLine);
+            const i = nodeMap.get(start)
+            const j = nodeMap.get(end)
+            console.log(i,j)
+            window.matrix[i][j] = 0;
+            window.matrix[j][i] = 0;
+            console.log(matrix)
         });
     };
+
     var router = platform.getRoutingService();
     router.calculateRoute(routingParameters, onResult, (error) => {alert(error.message);});
 }
